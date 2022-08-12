@@ -1,5 +1,8 @@
 #  어디에 단어가 들어갈 수 있을까
 
+import sys
+sys.stdin = open('input.txt')
+
 T = int(input())
 for test_case in range(1, T + 1):
     n, k = map(int, input().split())
