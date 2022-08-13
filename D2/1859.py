@@ -12,4 +12,4 @@ for t in range(1, t+1):
             profit += (max_price-market[i-1])
         if market[i-1] > max_price:
             max_price = market[i-1]
-    print('#'+str(t), str(profit))
+    print(f'#{t} {profit}')
