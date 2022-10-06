@@ -50,7 +50,7 @@ def dfs(x, y, direction):
 
             # 웜홀로 이동하는 경우
             if current_val >= 6:
-                # index() 튜플로 찾으려고 하니까 런타임 에러가 발생한다.
+                # 웜홀 출구 인덱스를 index()로 찾으려고 하니까 런타임 에러가 발생한다.
                 exit_idx = current_val - 5 if wormhole[current_val] == (nx, ny) else current_val
                 x, y = wormhole[exit_idx]
             # 1~5번 블록에 가는 경우
