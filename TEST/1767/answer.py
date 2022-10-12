@@ -1,3 +1,6 @@
+import sys
+sys.stdin = open('sample_input.txt')
+
 def remove(depth, dir, error):
     global connect
     # 행,열 좌표를 받는다.

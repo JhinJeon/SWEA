@@ -1,7 +1,10 @@
 # 점심 식사시간
 # dp로 풀어보자
+# 오답 (49/50)
+# 접근 방향을 고려해야 함
+
 import sys
-sys.stdin = open('debug.txt')
+sys.stdin = open('sample_input.txt')
 
 from collections import deque
 
@@ -127,10 +130,10 @@ for tc in range(1, t+1):
         s2_occupy.sort(reverse=False)
 
         # 계단 이용 시간 체크
-        if len(s1_occupy) >= 4:
+        if 4 <= len(s1_occupy):
             calculation(s1_occupy, 0, s1_time)
 
-        if len(s2_occupy) >= 4:
+        if 4 <= len(s2_occupy):
             calculation(s2_occupy, 0, s2_time)
 
         s1_total = s1_occupy[-1] if s1_occupy else 0
@@ -140,6 +143,3 @@ for tc in range(1, t+1):
             answer = total
 
     print(f'#{tc}', answer)
-
-
-# 5 5 6 7 7 8 9 9 10 11
