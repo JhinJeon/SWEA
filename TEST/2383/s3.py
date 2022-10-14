@@ -1,11 +1,10 @@
 # 점심 식사시간
-# dp로 풀어보자
-# 오답 (49/50)
-# 접근 방향을 고려해야 함
+
 
 import sys
 
-sys.stdin = open('sample_input.txt')
+sys.stdin = open('debug.txt')
+# sys.stdin = open('sample_input.txt')
 
 from collections import deque
 
@@ -45,23 +44,51 @@ def combination(arr, k, idx):
 
 
 # 각 경우의 수 별 계단 이용 시간 계산
-def calculation(arr, idx, stairtime):
+def calculation(arr, stairtime):
     elapsed_time = 0
-    wait_line = []
-    while idx < len(arr):
-        while len(wait_line) < 3:
-            if idx == len(arr) - 1:
-                break
-            wait_line.append(arr[idx])
-            idx += 1
+    in_stairs = deque([])
+    arr = deque(arr)
 
-        for i in range(len(wait_line) - 1, -1, -1):
-            if wait_line[i] <= 0:
-                wait_line.pop(0)
-            wait_line[i] -= 1
+    # 계단에 사람 채우기(첫 번째 분기용)
+    while len(in_stairs) < 3:
+        if arr:
+            new_value = arr.popleft()
+            in_stairs.append(new_value + stairtime + 1)
+        else:
+            break
 
+    # 두 번째 주기부터 이하 반복
+    while arr or in_stairs:
+        # 계단에 있는 사람이 내려가는 시간 계산
+        is_valid = True
+        for d in range(len(in_stairs)):
+            in_stairs[d] -= 1
+            if in_stairs[d] <= 0:
+                is_valid = False
+
+        # 계단을 다 내려간 사람이 있는 경우
+        if not is_valid:
+            replacement = []
+            for descending in in_stairs:
+                if descending > 0:
+                    replacement.append(descending)
+            in_stairs = replacement
+
+        # 경과 시간 계산
         elapsed_time += 1
 
+        # 결손 인원 보충
+        while len(in_stairs) < 3:
+            if arr and arr[0] <= 0:
+                arr.popleft()
+                in_stairs.append(stairtime)
+            else:
+                break
+
+        # 대기 인원 정보 변경
+        for a in range(len(arr)):
+            arr[a] -= 1
+                    
     return elapsed_time
 
 
@@ -114,25 +141,26 @@ for tc in range(1, t + 1):
         combination([], i, 0)
 
     answer = 99999999   # 최단 시간 반환용
-    total = 0
 
     people_count = set(range(len(people)))
     for case1 in combi_case:
+        case_total = []
         case2 = list(people_count - set(case1))
-        s1_user = []
-        s2_user = []
+        stair1_case = []        # 계단 1까지 가는 데 걸리는 시간
+        stair2_case = []        # 계단 2까지 가는 데 걸리는 시간
         if case1:
             for c1 in case1:
-                s1_user.append(distance1[c1])
-            s1_user.sort(reverse=False)
-            total += calculation(s1_user, 0, s1_time)
+                stair1_case.append(distance1[c1])
+            stair1_case.sort(reverse=False)
+            case_total.append(calculation(stair1_case, s1_time))
 
         if case2:
             for c2 in case2:
-                s2_user.append(distance2[c2])
-            s2_user.sort(reverse=False)
-            total += calculation(s2_user, 0, s2_time)
+                stair2_case.append(distance2[c2])
+            stair2_case.sort(reverse=False)
+            case_total.append(calculation(stair2_case, s2_time))
 
+        total = max(case_total)
         if total < answer:
             answer = total
 

@@ -1,5 +1,5 @@
 # 프로세서 연결하기
-# 해결 중
+
 import sys
 sys.stdin = open('sample_input.txt')
 
@@ -44,6 +44,7 @@ def case_calculate(depth, connected_cells):
             x = cell_status[depth][0]
             y = cell_status[depth][1]
             error = False   # d 방향으로 이동했을 때 전선이나 다른 코어에 걸리는지 확인
+
             while True:
                 nx = x + dx[d]
                 ny = y + dy[d]
@@ -58,6 +59,7 @@ def case_calculate(depth, connected_cells):
                 graph[ny][nx] = -1
                 x = nx
                 y = ny
+
             if error:
                 counter_dfs(nx, ny, (d+2) % 4)
                 # 아직 모든 방향을 탐색하지 않은 경우 다른 방향부터 시도
